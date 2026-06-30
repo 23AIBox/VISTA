@@ -3,23 +3,13 @@
 [![arXiv](https://img.shields.io/badge/Paper-Open%20Access-brightgreen)](https://github.com/23AIBox/VISTA)
 [![GitHub](https://img.shields.io/badge/Code-GitHub-blue)](https://github.com/23AIBox/VISTA)
 
-This is the official code repository for the paper:
+This is the official code repository for the paper: **Virtual spatial transcriptomics from histopathology enables prognostic and therapeutic response prediction in cancer**
 
-> **Virtual spatial transcriptomics from histopathology enables prognostic and therapeutic response prediction in cancer**
->
-> Shaoqing Jiao, Zhen Yuan, Dazhi Lu, Xi Zeng, Yunwei Dong\*, Jiajie Peng\*
->
-> *Northwestern Polytechnical University*
-
----
-
-## Abstract
+## Overview of VISTA
 
 Spatial transcriptomics reveals cellular heterogeneity, intercellular communication, and tissue organization, but its cost and limited accessibility restrict clinical use. Here, we present **VISTA**, a model that integrates multi-scale histological features and spatial context to infer spatial gene expression from H&E-stained tissue images. Across leave-one-section-out cross-validation and independent validation, VISTA robustly predicted thousands of genes and outperformed state-of-the-art methods. Beyond expression reconstruction, VISTA enabled clinically relevant downstream analyses. In TCGA breast cancer samples, it identified survival-associated genes, stratified prognostic risk groups, and revealed adverse tumor-associated spatial subtypes. In our in-house intrahepatic cholangiocarcinoma cohort, it preserved tumor–normal organization and identified *CLDN4* and *CYP3A4* as complementary spatial biomarkers. In HER2+ breast cancer, it predicted pathological response to neoadjuvant trastuzumab-based therapy and linked response-associated regions to immune and cytokine-related programs. These results support virtual spatial transcriptomics from routine histopathology for oncology applications.
 
-**Keywords:** Virtual spatial transcriptomics, Pathology foundation models, Gene expression prediction, Deep learning
-
----
+![Overview of VISTA](model.png)
 
 ## Pipeline Overview
 
