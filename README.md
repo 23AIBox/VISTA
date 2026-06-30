@@ -1,8 +1,5 @@
 # VISTA: Virtual Spatial Transcriptomics from Histopathology
 
-[![arXiv](https://img.shields.io/badge/Paper-Open%20Access-brightgreen)](https://github.com/23AIBox/VISTA)
-[![GitHub](https://img.shields.io/badge/Code-GitHub-blue)](https://github.com/23AIBox/VISTA)
-
 This is the official code repository for the paper: **Virtual spatial transcriptomics from histopathology enables prognostic and therapeutic response prediction in cancer**
 
 ## Overview of VISTA
@@ -10,36 +7,6 @@ This is the official code repository for the paper: **Virtual spatial transcript
 Spatial transcriptomics reveals cellular heterogeneity, intercellular communication, and tissue organization, but its cost and limited accessibility restrict clinical use. Here, we present **VISTA**, a model that integrates multi-scale histological features and spatial context to infer spatial gene expression from H&E-stained tissue images. Across leave-one-section-out cross-validation and independent validation, VISTA robustly predicted thousands of genes and outperformed state-of-the-art methods. Beyond expression reconstruction, VISTA enabled clinically relevant downstream analyses. In TCGA breast cancer samples, it identified survival-associated genes, stratified prognostic risk groups, and revealed adverse tumor-associated spatial subtypes. In our in-house intrahepatic cholangiocarcinoma cohort, it preserved tumor–normal organization and identified *CLDN4* and *CYP3A4* as complementary spatial biomarkers. In HER2+ breast cancer, it predicted pathological response to neoadjuvant trastuzumab-based therapy and linked response-associated regions to immune and cytokine-related programs. These results support virtual spatial transcriptomics from routine histopathology for oncology applications.
 
 ![Overview of VISTA](model.png)
-
-## Pipeline Overview
-
-```
-TCGA Data                                  Non-TCGA Data
-   │                                              │
-   ▼                                              │
-1. SVS → JPEG conversion                          │
-   │                                              │
-   ▼                                              │
-2. Spot filtering & coordinate recording          │
-   │                                              │
-   └────────────────┬─────────────────────────────┘
-                    ▼
-          3. Raw patch extraction
-                    │
-                    ▼
-          4. UNI2 feature extraction (1536-dim)
-                    │
-                    ▼
-          5. TITAN slide-level encoding (768-dim)
-                    │
-                    ▼
-          6. VISTA model training
-                    │
-                    ▼
-          7. Prediction & evaluation
-```
-
----
 
 ## Tutorials
 
@@ -86,37 +53,6 @@ Load **TITAN**, a whole-slide foundation model that aggregates patch features an
 Train the full VISTA architecture with leave-one-out cross-validation on the her2st breast cancer dataset.
 
 **Notebook:** [`6_VISTA_model_training.ipynb`](6_VISTA_model_training.ipynb)
-
-**Architecture:**
-```
-Input Patch [B, N, 3, H, W]
-       │
-       ▼
-ImprovedMultiScaleConvNeXt     ← 3×3 / 5×5 / 7×7 branches + GatedFusion
-       │
-       ▼
-ViT (FFN-only Transformer)    ← position encoding from spatial coordinates
-       │
-       ▼
-MultiHeadGAT (Image branch)    ← feature-weighted spatial adjacency graph
-       │                                              │
-       │                              UNI2 features [N, 1536]
-       │                                      │
-       │                              TITAN slide encoding
-       │                                      │
-       │                              Global slide embedding [768]
-       │                                      │
-       │                      ┌───────────────┘
-       ▼                      ▼
- MultiHeadGAT (UNI2)    Global→Local Cross-Attention
-       │                      │
-       └──────────┬───────────┘
-                  ▼
-         Attention Fusion
-                  │
-                  ▼
-            MLP Head → Gene Expression [n_genes]
-```
 
 **Training details:** Loss = MSE + (1 − Pearson r), Adam optimizer (lr=1e-5), 1000 epochs, evaluation every 2 epochs. Best model saved by spot+gene PCC sum.
 
